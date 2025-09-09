@@ -1,3 +1,4 @@
+# app/api/v1/endpoints/analytics.py
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import func, select
@@ -20,7 +21,8 @@ async def get_campaign_performance(
     if not end_date:
         end_date = datetime.utcnow()
 
-    result = await self.db.execute(
+    # Corregir: usar db en lugar de self.db
+    result = await db.execute(
         select(CampaignPerformance)
         .where(CampaignPerformance.campaign_id == campaign_id)
         .where(CampaignPerformance.timestamp >= start_date)
@@ -45,9 +47,9 @@ async def get_metrics_summary(db: AsyncSession = Depends(get_db)):
     
     summary = result.first()
     return {
-        "total_events": summary.total_events,
-        "total_opens": summary.total_opens,
-        "total_clicks": summary.total_clicks,
-        "total_conversions": summary.total_conversions,
-        "total_revenue": summary.total_revenue
+        "total_events": summary.total_events or 0,
+        "total_opens": summary.total_opens or 0,
+        "total_clicks": summary.total_clicks or 0,
+        "total_conversions": summary.total_conversions or 0,
+        "total_revenue": summary.total_revenue or 0.0
     }

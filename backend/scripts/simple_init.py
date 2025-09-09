@@ -1,3 +1,4 @@
+# scripts/simple_init.py
 import asyncio
 import asyncpg
 from app.core.config import settings
@@ -38,7 +39,11 @@ async def main():
     
     # Ahora inicializar las tablas
     from app.core.database import engine, Base
-    from app.models import *
+    # Importar modelos explícitamente
+    from app.models.user import User
+    from app.models.campaign import Campaign, CampaignPerformance
+    from app.models.customer import Customer, CustomerSegment
+    from app.models.ai_model import AIModel, ModelTraining
     
     try:
         async with engine.begin() as conn:
@@ -48,6 +53,8 @@ async def main():
             
     except Exception as e:
         print(f"❌ Error creando tablas: {e}")
+        import traceback
+        traceback.print_exc()
 
 if __name__ == "__main__":
     asyncio.run(main())

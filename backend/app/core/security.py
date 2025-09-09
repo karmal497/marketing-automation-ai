@@ -4,11 +4,11 @@ from passlib.context import CryptContext
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import select
 from app.core.config import settings
 from app.core.database import get_db
 from app.models.user import User
 from app.schemas.user import TokenData
-import asyncpg
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="api/v1/auth/token")
@@ -20,7 +20,7 @@ def get_password_hash(password):
     return pwd_context.hash(password)
 
 async def get_user(db: AsyncSession, email: str):
-    result = await db.execute(asyncpg.select(User).where(User.email == email))
+    result = await db.execute(select(User).where(User.email == email))
     return result.scalar_one_or_none()
 
 async def authenticate_user(db: AsyncSession, email: str, password: str):
