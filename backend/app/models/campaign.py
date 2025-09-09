@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Float, DateTime, JSON, ForeignKey, Enum
+from sqlalchemy import Column, Integer, String, Float, DateTime, ForeignKey, Enum
 from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship
 from app.core.database import Base
@@ -28,7 +28,6 @@ class Campaign(Base):
 
 class CampaignPerformance(Base):
     __tablename__ = "campaign_performance"
-    __table_args__ = {'schema': 'analytics'}
     
     id = Column(Integer, primary_key=True, index=True)
     campaign_id = Column(Integer, ForeignKey("campaigns.id"))

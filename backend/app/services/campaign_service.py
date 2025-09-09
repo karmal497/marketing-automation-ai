@@ -21,7 +21,7 @@ class CampaignService:
         await self.db.refresh(db_campaign)
         return db_campaign
 
-    async def get_campaigns(self, skip: int = 0, limit: int = 100):
+    async def get_campaigns(self, skip: int = 0, limit: int = 100) -> List[Campaign]:
         result = await self.db.execute(
             select(Campaign)
             .offset(skip)
@@ -29,13 +29,13 @@ class CampaignService:
         )
         return result.scalars().all()
 
-    async def get_campaign(self, campaign_id: int):
+    async def get_campaign(self, campaign_id: int) -> Optional[Campaign]:
         result = await self.db.execute(
             select(Campaign).where(Campaign.id == campaign_id)
         )
         return result.scalar_one_or_none()
 
-    async def update_campaign(self, campaign_id: int, campaign: CampaignUpdate):
+    async def update_campaign(self, campaign_id: int, campaign: CampaignUpdate) -> Optional[Campaign]:
         db_campaign = await self.get_campaign(campaign_id)
         if not db_campaign:
             return None

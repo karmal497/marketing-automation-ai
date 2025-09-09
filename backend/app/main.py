@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.api.v1.endpoints import campaigns, ai, analytics
+from app.api.v1.endpoints import campaigns_router, ai_router, analytics_router
 from app.core.config import settings
 from app.core.monitoring import monitor_requests, metrics_endpoint
 from app.core.database import engine, Base
@@ -21,9 +21,9 @@ app.add_middleware(
 app.middleware("http")(monitor_requests)
 
 # Endpoints
-app.include_router(campaigns.router, prefix="/api/v1/campaigns", tags=["campaigns"])
-app.include_router(ai.router, prefix="/api/v1/ai", tags=["ai"])
-app.include_router(analytics.router, prefix="/api/v1/analytics", tags=["analytics"])
+app.include_router(campaigns_router, prefix="/api/v1/campaigns", tags=["campaigns"])
+app.include_router(ai_router, prefix="/api/v1/ai", tags=["ai"])
+app.include_router(analytics_router, prefix="/api/v1/analytics", tags=["analytics"])
 
 # Endpoint de métricas
 app.add_route("/metrics", metrics_endpoint)

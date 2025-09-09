@@ -1,21 +1,23 @@
-import openai
+from openai import AsyncOpenAI
 from app.core.config import settings
 from typing import Dict, Any
 import json
 
 class AIService:
     def __init__(self):
-        openai.api_key = settings.OPENAI_API_KEY
+        self.client = AsyncOpenAI(api_key=settings.OPENAI_API_KEY)
     
-    async def generate_content(self, prompt: str, context: Dict[str, Any] = None):
+    async def generate_content(self, prompt: str, context: Dict[str, Any] = None, 
+                             model: str = "gpt-4", temperature: float = 0.7, 
+                             max_tokens: int = 1000):
         try:
             full_prompt = self._build_prompt(prompt, context)
             
-            response = await openai.ChatCompletion.acreate(
-                model="gpt-4",
+            response = await self.client.chat.completions.create(
+                model=model,
                 messages=[{"role": "user", "content": full_prompt}],
-                max_tokens=1000,
-                temperature=0.7
+                max_tokens=max_tokens,
+                temperature=temperature
             )
             
             return response.choices[0].message.content.strip()
