@@ -19,6 +19,8 @@ async def init_db():
                 if_not_exists => TRUE
             )
         """)
+        
+        print("Database initialized successfully!")
 
 if __name__ == "__main__":
     asyncio.run(init_db())
