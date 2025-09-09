@@ -60,17 +60,31 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         <Toolbar />
         <Box sx={{ overflow: 'auto' }}>
           <List>
-            {menuItems.map((item) => (
-              <ListItem
-                button
-                key={item.text}
-                onClick={() => navigate(item.path)}
-                selected={location.pathname === item.path}
-              >
-                <ListItemIcon>{item.icon}</ListItemIcon>
-                <ListItemText primary={item.text} />
-              </ListItem>
-            ))}
+            {menuItems.map((item) => {
+              const isSelected = location.pathname === item.path;
+              return (
+                <ListItem
+                  key={item.text}
+                  onClick={() => navigate(item.path)}
+                  sx={{
+                    cursor: 'pointer',
+                    backgroundColor: isSelected ? 'action.selected' : 'inherit',
+                    '&:hover': {
+                      backgroundColor: 'action.hover',
+                    },
+                  }}
+                >
+                  <ListItemIcon>{item.icon}</ListItemIcon>
+                  <ListItemText 
+                    primary={item.text} 
+                    sx={{
+                      color: isSelected ? 'primary.main' : 'text.primary',
+                      fontWeight: isSelected ? 'bold' : 'normal',
+                    }}
+                  />
+                </ListItem>
+              );
+            })}
           </List>
         </Box>
       </Drawer>

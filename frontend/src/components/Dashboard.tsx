@@ -69,27 +69,35 @@ const Dashboard: React.FC = () => {
         Marketing Dashboard
       </Typography>
       
-      <Grid container spacing={3}>
+      <Box
+        sx={{
+          display: 'grid',
+          gridTemplateColumns: {
+            xs: '1fr',
+            sm: 'repeat(2, 1fr)',
+            md: 'repeat(4, 1fr)'
+          },
+          gap: 3
+        }}
+      >
         {metricCards.map((card, index) => (
-          <Grid item xs={12} sm={6} md={3} key={index}>
-            <Card>
-              <CardContent>
-                <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                  <Box sx={{ color: card.color, mr: 2 }}>
-                    {card.icon}
-                  </Box>
-                  <Typography variant="h6" component="div">
-                    {card.title}
-                  </Typography>
+          <Card key={index}>
+            <CardContent>
+              <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                <Box sx={{ color: card.color, mr: 2 }}>
+                  {card.icon}
                 </Box>
-                <Typography variant="h4" component="div" sx={{ color: card.color }}>
-                  {card.value}
+                <Typography variant="h6" component="div">
+                  {card.title}
                 </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
+              </Box>
+              <Typography variant="h4" component="div" sx={{ color: card.color }}>
+                {card.value}
+              </Typography>
+            </CardContent>
+          </Card>
         ))}
-      </Grid>
+      </Box>
     </Box>
   );
 };
