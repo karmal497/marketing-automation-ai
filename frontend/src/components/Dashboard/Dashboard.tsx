@@ -36,11 +36,6 @@ const Dashboard: React.FC<DashboardProps> = ({ onLogout }) => {
     setAnchorEl(null);
   };
 
-  const handleLogout = () => {
-    onLogout();
-    handleClose();
-  };
-
   const stats = [
     { title: 'Total Campaigns', value: '12', icon: <CampaignIcon />, color: '#1976d2' },
     { title: 'Active Campaigns', value: '5', icon: <AnalyticsIcon />, color: '#2e7d32' },
@@ -82,7 +77,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onLogout }) => {
           >
             <MenuItem onClick={handleClose}>Profile</MenuItem>
             <MenuItem onClick={handleClose}>Settings</MenuItem>
-            <MenuItem onClick={handleLogout}>Logout</MenuItem>
+            <MenuItem onClick={onLogout}>Exit</MenuItem>
           </Menu>
         </Toolbar>
       </AppBar>

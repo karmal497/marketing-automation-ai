@@ -141,9 +141,9 @@ const SplashScreen: React.FC = () => {
       }
     }, 150);
 
-    // Redirigir al login después de 5 segundos
+    // Redirigir al dashboard después de 5 segundos
     const timer = setTimeout(() => {
-      navigate('/login');
+      navigate('/dashboard');
     }, 5000);
 
     return () => {

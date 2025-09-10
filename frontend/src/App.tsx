@@ -6,8 +6,6 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 // Components
 import SplashScreen from './components/SplashScreen/SplashScreen';
-import Login from './components/Auth/Login';
-import Register from './components/Auth/Register';
 import Dashboard from './components/Dashboard/Dashboard';
 import CampaignList from './components/Campaigns/CampaignList';
 import CreateCampaign from './components/Campaigns/CreateCampaign';
@@ -61,14 +59,9 @@ const theme = createTheme({
 });
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
   const [showSplash, setShowSplash] = useState(true);
 
   useEffect(() => {
-    // Check if user is authenticated
-    const token = localStorage.getItem('authToken');
-    setIsAuthenticated(!!token);
-
     // Show splash screen for 5 seconds
     const timer = setTimeout(() => {
       setShowSplash(false);
@@ -77,14 +70,8 @@ function App() {
     return () => clearTimeout(timer);
   }, []);
 
-  const handleLogin = (token: string) => {
-    localStorage.setItem('authToken', token);
-    setIsAuthenticated(true);
-  };
-
   const handleLogout = () => {
-    localStorage.removeItem('authToken');
-    setIsAuthenticated(false);
+    window.location.href = '/';
   };
 
   if (showSplash) {
@@ -102,50 +89,20 @@ function App() {
         <Router>
           <Routes>
             <Route 
-              path="/login" 
-              element={
-                isAuthenticated ? 
-                <Navigate to="/dashboard" replace /> : 
-                <Login />
-              } 
-            />
-            <Route 
-              path="/register" 
-              element={
-                isAuthenticated ? 
-                <Navigate to="/dashboard" replace /> : 
-                <Register />
-              } 
-            />
-            <Route 
               path="/dashboard" 
-              element={
-                isAuthenticated ? 
-                <Dashboard onLogout={handleLogout} /> : 
-                <Navigate to="/login" replace />
-              } 
+              element={<Dashboard onLogout={handleLogout} />} 
             />
             <Route 
               path="/campaigns" 
-              element={
-                isAuthenticated ? 
-                <CampaignList /> : 
-                <Navigate to="/login" replace />
-              } 
+              element={<CampaignList />} 
             />
             <Route 
               path="/campaigns/create" 
-              element={
-                isAuthenticated ? 
-                <CreateCampaign /> : 
-                <Navigate to="/login" replace />
-              } 
+              element={<CreateCampaign />} 
             />
             <Route 
               path="/" 
-              element={
-                <Navigate to={isAuthenticated ? "/dashboard" : "/login"} replace />
-              } 
+              element={<Navigate to="/dashboard" replace />} 
             />
           </Routes>
         </Router>
